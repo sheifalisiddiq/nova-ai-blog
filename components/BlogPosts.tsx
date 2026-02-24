@@ -304,5 +304,5 @@ const BlogPosts: React.FC = () => {
     </div>
   );
 };
-A
+
 export default BlogPosts;

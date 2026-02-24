@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { NavTab } from './types.ts';
 import Navbar from './components/Navbar.tsx';
@@ -26,6 +27,7 @@ const App: React.FC = () => {
   const getTabIndex = (tab: NavTab) => Object.values(NavTab).indexOf(tab);
   const direction = getTabIndex(activeTab) > getTabIndex(prevTab) ? 1 : -1;
 
+  // Added explicit Variants type to fix TypeScript error where "spring" was inferred as string instead of AnimationGeneratorType
   const pageVariants: Variants = {
     initial: (direction: number) => ({
       x: direction > 0 ? 500 : -500,
@@ -67,30 +69,9 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#05070f] flex flex-col overflow-hidden selection:bg-cyan-500/30">
-      {/* === Premium Cyber Background (GLOBAL) === */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        {/* Subtle animated cyber grid */}
-        <div
-          className="
-            absolute inset-0 opacity-[0.16]
-            bg-[linear-gradient(rgba(0,255,255,0.10)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.08)_1px,transparent_1px)]
-            bg-[size:48px_48px]
-            [mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_78%)]
-            animate-[gridMove_18s_linear_infinite]
-          "
-        />
-
-        {/* Glow blobs for premium depth */}
-        <div className="absolute -top-48 -left-48 h-[620px] w-[620px] rounded-full bg-cyan-500/16 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-52 -right-52 h-[680px] w-[680px] rounded-full bg-blue-500/14 blur-3xl animate-pulse" />
-
-        {/* Dark vignette overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/45 to-black/80" />
-      </div>
-
+    <div className="min-h-screen bg-slate-950 flex flex-col selection:bg-cyan-500/30">
       <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
-
+      
       <main className="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full overflow-hidden">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
