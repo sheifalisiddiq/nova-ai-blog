@@ -1,0 +1,51 @@
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 48px; }
+}
+
+.cyber-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cyber-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(0, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: gridMove 18s linear infinite;
+}
+
+.glow-left {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 40%;
+  height: 40%;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 255, 255, 0.4) 0%, transparent 70%);
+  filter: blur(60px);
+  z-index: -9;
+}
+
+.glow-right {
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  width: 40%;
+  height: 40%;
+  background: radial-gradient(circle at 70% 70%, rgba(0, 100, 255, 0.5) 0%, transparent 70%);
+  filter: blur(60px);
+  z-index: -9;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.7) 150%);
+  z-index: -8;
+}

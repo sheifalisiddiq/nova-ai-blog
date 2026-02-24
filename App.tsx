@@ -1,4 +1,4 @@
-
+// App.tsx
 import React, { useState, useEffect } from 'react';
 import { NavTab } from './types.ts';
 import Navbar from './components/Navbar.tsx';
@@ -69,7 +69,15 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col selection:bg-cyan-500/30">
+    <div className="min-h-screen bg-slate-950 flex flex-col selection:bg-cyan-500/30 relative">
+      {/* Cyber background */}
+      <div className="cyber-bg">
+        <div className="cyber-grid" />
+        <div className="glow-left" />
+        <div className="glow-right" />
+        <div className="vignette" />
+      </div>
+
       <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
       
       <main className="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full overflow-hidden">
