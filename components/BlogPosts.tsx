@@ -26,7 +26,7 @@ const INITIAL_POSTS: BlogPost[] = [
       }
     },
     reflections:
-      'Week 1 established the project direction and the core concept: “behavior matters more than signatures.” The next challenge was turning that idea into a stable real-time system that doesn’t break under noisy traffic.',
+      'Week 1 established the project direction and the core concept: behavior matters more than signatures. The next challenge was turning that idea into a stable real-time system that does not break under noisy traffic.',
     tags: ['FYP', 'Networking', 'Cybersecurity', 'Scapy', 'Streamlit', 'Behavioral-Detection'],
     comments: []
   },
@@ -42,7 +42,7 @@ const INITIAL_POSTS: BlogPost[] = [
       'In security tools, usability is not cosmetic. If the UI constantly refreshes, resets state, or floods the user with unstable alerts, the system becomes unusable. Threat detection must be stable, explainable, and resistant to noise.',
     details: {
       significance:
-        'This week turned NOVA from “it runs” into “it operates reliably.” The work was mostly systems engineering: state management, smoothing, error handling, and designing a hybrid scoring strategy to reduce false positives.',
+        'This week turned NOVA from it runs into it operates reliably. The work was mostly systems engineering: state management, smoothing, error handling, and designing a hybrid scoring strategy to reduce false positives.',
       approach: {
         capture:
           'Streamlit Live UI Fix: Replaced the rerun loop (time.sleep + st.rerun) with Streamlit fragments (@st.fragment(run_every=1)) so only live widgets update without reloading the whole page.',
@@ -53,7 +53,7 @@ const INITIAL_POSTS: BlogPost[] = [
       }
     },
     reflections:
-      'The biggest lesson: real-time systems fail in boring ways. Empty files, missing env vars, and unstable refresh loops can destroy a demo faster than the “AI” part. Fixing stability first made the whole project feel professional.',
+      'The biggest lesson: real-time systems fail in boring ways. Empty files, missing env vars, and unstable refresh loops can destroy a demo faster than the AI part. Fixing stability first made the whole project feel professional.',
     tags: ['Streamlit', 'UI', 'Hybrid-Scoring', 'Telemetry', 'Defensive-Programming', 'Reliability'],
     comments: []
   },
@@ -62,21 +62,21 @@ const INITIAL_POSTS: BlogPost[] = [
     id: '3',
     week: 3,
     date: 'Week 3',
-    title: 'Week 3: End-to-End IDS Pipeline (Sniffer → CSV → Dashboard → Incidents)',
+    title: 'Week 3: End-to-End IDS Pipeline (Sniffer -> CSV -> Dashboard -> Incidents)',
     concept:
       'By Week 3, NOVA evolved into a functional host-based IDS prototype with two pipelines: (1) a live telemetry sensor that logs per-second features to CSV and (2) a dashboard that reads telemetry, computes anomaly signals, and triggers incident workflows.',
     rationale:
-      'A real IDS is a pipeline problem: sensor accuracy, feature integrity, baseline modeling, scoring stability, and logging all matter. If features don’t match training schema or the baseline is calculated incorrectly, detection becomes “works but wrong.”',
+      'A real IDS is a pipeline problem: sensor accuracy, feature integrity, baseline modeling, scoring stability, and logging all matter. If features do not match training schema or the baseline is calculated incorrectly, detection becomes works but wrong.',
     details: {
       significance:
-        'This week proved the Phase 1 baseline: real-time capture, feature engineering, baseline learning, anomaly scoring, attack simulation, and a stable dashboard view. It’s beyond a toy sniffer because it closes the loop end-to-end.',
+        'This week proved the Phase 1 baseline: real-time capture, feature engineering, baseline learning, anomaly scoring, attack simulation, and a stable dashboard view. It is beyond a toy sniffer because it closes the loop end-to-end.',
       approach: {
         capture:
           'Live Sensor (nova_sniffer.py): Interface discovery + explicit selection, 1-second aggregation windows, feature extraction (protocol_type, src_bytes, dst_bytes, count, srv_count) + telemetry like packets_per_sec and source_ip.',
         ai:
           'Detection Logic (app.py): Baseline mean/std from historical samples, z-score velocity spike scoring, optional ML anomaly probability (nova_brain.pkl), hybrid score + smoothing + sticky threat windows to keep alerts stable.',
         ui:
-          'Incident Workflow: Logged incidents to nova_incidents.csv only on state transition (False→True), added schema migration/backups to prevent CSV header drift, included offline forensics (PCAP stats) + optional Gemini narrative.'
+          'Incident Workflow: Logged incidents to nova_incidents.csv only on state transition (False->True), added schema migration/backups to prevent CSV header drift, included offline forensics (PCAP stats) + optional Gemini narrative.'
       }
     },
     reflections:
@@ -96,7 +96,7 @@ const INITIAL_POSTS: BlogPost[] = [
       'The real world is messy: browser updates, DNS, and normal bursts look like attacks. The challenge is to detect malicious behavior while keeping false positives low. Scaling also means planning architecture evolution beyond CSV pipelines.',
     details: {
       significance:
-        'NOVA now behaves like a mini SOC pipeline: detect → validate → log → respond → report. The next engineering jump is stronger classification (port scan, SYN flood) and architectural scaling (buffering, DB, multi-thread sensor).',
+        'NOVA now behaves like a mini SOC pipeline: detect -> validate -> log -> respond -> report. The next engineering jump is stronger classification (port scan, SYN flood) and architectural scaling (buffering, DB, multi-thread sensor).',
       approach: {
         capture:
           'Noise Control + Repeatable Testing: Reduced background noise with inbound filtering + capture filters, built repeatable traffic generation (UDP spike simulation, HTTP request flood) to validate detection logic end-to-end.',
@@ -109,6 +109,60 @@ const INITIAL_POSTS: BlogPost[] = [
     reflections:
       'Week 4 made the project feel real: not just detection, but response and reporting. The honest gap is scalability: CSV-based telemetry and single-host monitoring. Phase 3 will target port scan detection + stronger TCP feature signals.',
     tags: ['Scaling', 'Attack-Classification', 'HTTP-Flood', 'UDP-Spike', 'Forensics', 'Incident-Response'],
+    comments: []
+  },
+
+  {
+    id: '5',
+    week: 5,
+    date: 'Week 5',
+    title: 'Week 5: Real-World HTTP Flood Detection, Alerting, and Reporting',
+    concept:
+      'This week focused on validating NOVA against a real-world Layer 7 single-source HTTP request flood pattern using an iPhone Shortcut that repeatedly sent HTTP requests to the laptop. Compared with attack_sim.py, this traffic pattern was more consistent and reliably triggered the detection pipeline.',
+    rationale:
+      'Reliable validation traffic is critical for IDS engineering. When test traffic is inconsistent, detector tuning and incident workflows are hard to trust. The iPhone-generated request flood provided stable behavior that made it possible to verify detection accuracy, runtime resilience, and reporting quality under sustained load.',
+    details: {
+      significance:
+        'Week 5 moved NOVA from prototype anomaly outputs to operational incident handling. The system now remains stable during high request rates and automatically produces actionable forensic reports when threat state transitions occur.',
+      approach: {
+        capture:
+          'Traffic Validation + Runtime Stability: Confirmed attack characteristics including high packets per second, very high top_ip_share, stable destination port behavior, and ACK-heavy repeated request patterns. Discovered and fixed RuntimeError: deque mutated during iteration in nova_sniffer.py by snapshotting deque contents into lists before iteration, which stabilized capture during high traffic.',
+        ai:
+          'Detection Reliability: Verified that attack_sim.py was not consistently triggering detections while the iPhone request flood did. This provided a stronger signal source for evaluating threat transitions (False->True) and confidence in anomaly scoring under realistic repeated-request behavior.',
+        ui:
+          'Automated Incident Workflow + Report Quality: Improved the dashboard/reporting flow so a threat-state transition automatically logs the incident, generates a PDF report, and emails it. Upgraded reports with attack type, PPS peak, baseline mean/std, z-score, ML anomaly probability, hybrid and smoothed score, top_ip_share, top destination port, and traffic evidence graph. Evidence image files now use timestamp-based unique names and temporary PNG files are deleted after PDF generation.'
+      }
+    },
+    reflections:
+      'This week moved NOVA from a prototype detector into a system capable of producing meaningful incident outputs. The focus was not only detection, but operational usefulness: validating a real attack pattern, keeping the sniffer stable under load, and automatically generating detailed forensic reports that can be shared immediately.',
+    tags: ['HTTP Flood', 'Incident Reports', 'Alerting', 'Sniffer Stability', 'Layer 7', 'PDF Reporting'],
+    comments: []
+  },
+
+  {
+    id: '6',
+    week: 6,
+    date: 'Week 6',
+    title: 'Week 6: Firewall Response, Safe Blocking Logic, and Demo-Ready Incident Workflow',
+    concept:
+      'This week focused on converting detection into safe action by hardening firewall blocking, fixing incorrect block-target selection, and validating the full detect-to-response loop for demonstrations. The objective was to make response behavior as reliable as detection behavior.',
+    rationale:
+      'Active response features can create risk if targeting is unstable or OS-level execution is unreliable. For a host IDS, it is essential that blocking and unblocking actions are predictable, transparent, and reversible. This week prioritized trust, control, and operational safety in response logic.',
+    details: {
+      significance:
+        'By the end of Week 6, NOVA achieved a demo-ready incident pipeline: detect, classify, report, email, block, and unblock. The response path is now significantly safer because target selection is persistent and firewall command success is evaluated correctly.',
+      approach: {
+        capture:
+          'Environment + Capture Validation: Resolved Windows firewall permission issues by running Streamlit from an Administrator PowerShell session after activating the virtual environment. Also validated sniffer capture setup: correct Wi-Fi interface selection, correct local IP detection, and a BPF filter pinned to inbound traffic destined for the laptop.',
+        ai:
+          'Safe Targeting Logic: Fixed a critical bug where the dashboard could block the wrong IP because target selection was tied to a constantly changing live src_ip from telemetry. Introduced persistent st.session_state["block_target"], added a "Use current attacker IP" control, and added a warning when generating a report for an IP that differs from the detected attacker.',
+        ui:
+          'Firewall Execution Hardening + Workflow Reliability: Improved block/unblock implementation to use subprocess returncode instead of parsing "Ok" text, include stdout/stderr in failure feedback, and remove conflicting firewall rules before adding new ones. After these changes, the workflow reliably supports block attacker IP, verify safe state, and unblock successfully. Next validation steps were planned for same-laptop local tests, alternate traffic patterns, and later a second laptop for more realistic simulation.'
+      }
+    },
+    reflections:
+      'This week was about trust and control. Detection alone is not enough if response actions are unreliable or unsafe. By stabilizing firewall behavior and making the block target persistent, NOVA became safer to operate and stronger as a practical demonstration of active defense.',
+    tags: ['Firewall', 'Active Response', 'Blocking Logic', 'Windows Security', 'Demo Ready', 'Incident Response'],
     comments: []
   }
 ];
@@ -126,7 +180,7 @@ const BlogPosts: React.FC = () => {
         minute: '2-digit',
         hour12: true
       })
-      .replace(',', ' •');
+      .replace(',', ' �');
 
     const comment: Comment = {
       ...newComment,
