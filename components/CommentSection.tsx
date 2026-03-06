@@ -1,6 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Comment } from '../types.ts';
+import GlowCard from './ui/GlowCard.tsx';
 
 interface CommentSectionProps {
   comments: Comment[];
@@ -42,58 +43,58 @@ const CommentSection: React.FC<CommentSectionProps> = ({ comments, onAddComment,
   };
 
   return (
-    <div className="mt-12 pt-12 border-t border-slate-800">
-      <h4 className="text-xl font-bold text-white mb-8 flex items-center gap-3">
+    <div className="mt-12 pt-10 border-t border-slate-800">
+      <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
         <svg className="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
         </svg>
         Discussion ({comments.length})
       </h4>
 
-      {/* Comment Form */}
-      <form onSubmit={handleSubmit} className="mb-12 bg-slate-900/50 p-6 rounded-2xl border border-slate-800 space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="text-xs font-mono text-slate-500 uppercase tracking-widest">Display Name</label>
-            <input
-              type="text"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-              placeholder="Your name"
-              className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-200 text-sm"
-            />
+      <GlowCard className="mb-10 p-5 md:p-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-mono text-slate-500 uppercase tracking-widest">Display Name</label>
+              <input
+                type="text"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+                placeholder="Your name"
+                className="w-full px-4 py-2 bg-slate-950/80 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-200 text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-mono text-slate-500 uppercase tracking-widest">Verification: {captcha.question}</label>
+              <input
+                type="text"
+                value={captchaAnswer}
+                onChange={(e) => setCaptchaAnswer(e.target.value)}
+                placeholder="Answer"
+                className="w-full px-4 py-2 bg-slate-950/80 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-200 text-sm"
+              />
+            </div>
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-mono text-slate-500 uppercase tracking-widest">Verification: {captcha.question}</label>
-            <input
-              type="text"
-              value={captchaAnswer}
-              onChange={(e) => setCaptchaAnswer(e.target.value)}
-              placeholder="Answer"
-              className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-200 text-sm"
+            <label className="text-xs font-mono text-slate-500 uppercase tracking-widest">Message</label>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={3}
+              placeholder="Share your thoughts..."
+              className="w-full px-4 py-2 bg-slate-950/80 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-200 text-sm resize-none"
             />
           </div>
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-mono text-slate-500 uppercase tracking-widest">Message</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={3}
-            placeholder="Share your thoughts..."
-            className="w-full px-4 py-2 bg-slate-950 border border-slate-800 rounded-lg focus:outline-none focus:border-cyan-500 text-slate-200 text-sm resize-none"
-          />
-        </div>
-        {error && <p className="text-red-400 text-xs font-medium">{error}</p>}
-        <button
-          type="submit"
-          className="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-sm font-bold transition-colors"
-        >
-          Post Comment
-        </button>
-      </form>
+          {error && <p className="text-red-400 text-xs font-medium">{error}</p>}
+          <button
+            type="submit"
+            className="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-sm font-bold transition-colors shadow-[0_0_22px_rgba(34,211,238,0.25)]"
+          >
+            Post Comment
+          </button>
+        </form>
+      </GlowCard>
 
-      {/* Comments List */}
       <div className="space-y-6">
         {comments.length === 0 ? (
           <p className="text-slate-500 text-center italic py-4">No comments yet. Be the first to start the conversation!</p>

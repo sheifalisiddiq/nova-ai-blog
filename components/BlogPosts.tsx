@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BlogPost, Comment } from '../types.ts';
 import CommentSection from './CommentSection.tsx';
 import { motion } from 'framer-motion';
+import GlowCard from './ui/GlowCard.tsx';
 
 const INITIAL_POSTS: BlogPost[] = [
   {
@@ -180,7 +181,7 @@ const BlogPosts: React.FC = () => {
         minute: '2-digit',
         hour12: true
       })
-      .replace(',', ' •');
+      .replace(',', ' -');
 
     const comment: Comment = {
       ...newComment,
@@ -217,117 +218,98 @@ const BlogPosts: React.FC = () => {
   };
 
   return (
-    <div className="space-y-12">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.5, ease: 'easeOut' }}
-        className="text-center mb-12"
-      >
-        <h2 className="text-3xl font-bold text-white mb-4">Project Journey</h2>
-        <p className="text-slate-400 max-w-2xl mx-auto">
-          Professional records of development, academic milestones, and technical implementation of the NOVA IDS.
-        </p>
+    <div className="space-y-8 md:space-y-10">
+      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+        <GlowCard className="p-6 md:p-8">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300 font-mono mb-2">Weekly Engineering Log</p>
+          <h2 className="bento-title text-white font-bold">NOVA Development Timeline</h2>
+          <p className="bento-subtitle mt-3">
+            Professional records of architecture, implementation milestones, incident-response workflows, and
+            validation outcomes across each weekly sprint.
+          </p>
+        </GlowCard>
       </motion.div>
 
-      <div className="grid grid-cols-1 gap-12">
+      <div className="grid grid-cols-1 gap-8">
         {posts.map((post) => (
           <motion.article
             key={post.id}
-            initial={{ opacity: 0, y: 100 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-150px' }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            className="relative group"
+            viewport={{ once: true, margin: '-90px' }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
           >
-            <div className="hidden lg:block absolute -left-16 top-1/2 -translate-y-1/2 w-8 h-[2px] bg-slate-800 group-hover:bg-cyan-500 transition-colors duration-1000"></div>
-
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl hover:border-slate-700 transition-all duration-700">
-              <div className="p-1 px-4 bg-slate-800/50 flex justify-between items-center text-xs font-mono text-slate-500 border-b border-slate-800">
-                <span>WEEK {post.week.toString().padStart(2, '0')}</span>
+            <GlowCard className="overflow-hidden" spotlight={post.week % 2 === 0 ? 'blue' : 'cyan'}>
+              <div className="p-2 px-5 bg-slate-900/85 flex justify-between items-center text-xs font-mono text-slate-400 border-b border-slate-800">
+                <span className="tracking-[0.18em] uppercase">Week {post.week.toString().padStart(2, '0')}</span>
                 <span>{post.date}</span>
               </div>
 
-              <div className="p-8 md:p-12">
+              <div className="p-6 md:p-9 lg:p-10">
                 <div className="flex flex-wrap gap-2 mb-6">
                   {post.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-2 py-1 bg-cyan-500/10 text-cyan-400 rounded text-[10px] font-bold uppercase tracking-wider"
+                      className="px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg text-[10px] font-bold uppercase tracking-wider"
                     >
                       #{tag}
                     </span>
                   ))}
                 </div>
 
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 group-hover:text-cyan-400 transition-colors duration-700">
-                  {post.title}
-                </h3>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">{post.title}</h3>
 
                 <div className="space-y-8">
-                  <section>
-                    <h4 className="text-sm font-mono text-cyan-500 uppercase tracking-widest mb-3">
-                      Project Idea
-                    </h4>
+                  <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
+                    <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Project Idea</h4>
                     <p className="text-slate-200 leading-relaxed">{post.concept}</p>
                   </section>
 
-                  <section>
-                    <h4 className="text-sm font-mono text-cyan-500 uppercase tracking-widest mb-3">
-                      Rationale
-                    </h4>
+                  <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
+                    <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Rationale</h4>
                     <p className="text-slate-400 leading-relaxed">{post.rationale}</p>
                   </section>
 
-                  <section>
-                    <h4 className="text-sm font-mono text-cyan-500 uppercase tracking-widest mb-3">
-                      Technical Work
-                    </h4>
+                  <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
+                    <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Technical Work</h4>
 
                     <div className="grid grid-cols-1 gap-4 mt-4">
                       <motion.div
-                        whileHover={{ x: 15 }}
+                        whileHover={{ x: 8 }}
                         transition={{ type: 'spring', stiffness: 40, damping: 10 }}
-                        className="p-4 bg-slate-950/50 rounded-xl border border-slate-800 flex items-start gap-3"
+                        className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
                       >
                         <div className="w-2 h-2 rounded-full bg-cyan-500 mt-1.5 flex-shrink-0"></div>
-                        <p className="text-slate-300 text-sm leading-relaxed">
-                          {post.details.approach.capture}
-                        </p>
+                        <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.capture}</p>
                       </motion.div>
 
                       <motion.div
-                        whileHover={{ x: 15 }}
+                        whileHover={{ x: 8 }}
                         transition={{ type: 'spring', stiffness: 40, damping: 10 }}
-                        className="p-4 bg-slate-950/50 rounded-xl border border-slate-800 flex items-start gap-3"
+                        className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
                       >
                         <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 flex-shrink-0"></div>
-                        <p className="text-slate-300 text-sm leading-relaxed">
-                          {post.details.approach.ai}
-                        </p>
+                        <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.ai}</p>
                       </motion.div>
 
                       <motion.div
-                        whileHover={{ x: 15 }}
+                        whileHover={{ x: 8 }}
                         transition={{ type: 'spring', stiffness: 40, damping: 10 }}
-                        className="p-4 bg-slate-950/50 rounded-xl border border-slate-800 flex items-start gap-3"
+                        className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
                       >
                         <div className="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0"></div>
-                        <p className="text-slate-300 text-sm leading-relaxed">
-                          {post.details.approach.ui}
-                        </p>
+                        <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.ui}</p>
                       </motion.div>
                     </div>
 
-                    <p className="mt-4 text-slate-400 text-sm italic">
+                    <p className="mt-4 text-slate-400 text-sm italic border-t border-slate-800/80 pt-4">
                       <span className="text-white font-bold">Significance:</span> {post.details.significance}
                     </p>
                   </section>
 
-                  <section className="bg-slate-950/30 p-6 rounded-2xl border border-slate-800/50 border-l-4 border-l-cyan-500">
-                    <h4 className="text-sm font-mono text-cyan-500 uppercase tracking-widest mb-3">
-                      Reflections
-                    </h4>
+                  <section className="bg-slate-950/50 p-6 rounded-2xl border border-slate-800/70 border-l-4 border-l-cyan-500">
+                    <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Reflections</h4>
                     <p className="text-slate-400 text-sm italic leading-relaxed">{post.reflections}</p>
                   </section>
                 </div>
@@ -340,9 +322,9 @@ const BlogPosts: React.FC = () => {
 
                 <div className="mt-12 flex justify-end">
                   <motion.div
-                    whileHover={{ x: 15 }}
+                    whileHover={{ x: 8 }}
                     transition={{ type: 'spring', stiffness: 40, damping: 10 }}
-                    className="flex items-center gap-2 text-cyan-500 font-medium cursor-pointer transition-all duration-700"
+                    className="flex items-center gap-2 text-cyan-300 font-medium cursor-pointer transition-all duration-700"
                   >
                     <span>Technical docs coming soon</span>
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -351,7 +333,7 @@ const BlogPosts: React.FC = () => {
                   </motion.div>
                 </div>
               </div>
-            </div>
+            </GlowCard>
           </motion.article>
         ))}
       </div>

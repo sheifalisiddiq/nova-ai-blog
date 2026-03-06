@@ -69,18 +69,18 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col selection:bg-cyan-500/30 relative">
-      {/* Cyber background */}
-      <div className="cyber-bg">
-        <div className="cyber-grid" />
-        <div className="glow-left" />
-        <div className="glow-right" />
-        <div className="vignette" />
+    <div className="nova-shell min-h-screen flex flex-col selection:bg-cyan-500/30">
+      <div className="nova-ambient">
+        <div className="nova-grid" />
+        <div className="nova-stars" />
+        <div className="nova-glow-left" />
+        <div className="nova-glow-right" />
+        <div className="nova-vignette" />
       </div>
 
       <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
       
-      <main className="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full overflow-hidden">
+      <main className="flex-grow pt-28 pb-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full overflow-hidden">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={activeTab}
@@ -91,7 +91,9 @@ const App: React.FC = () => {
             exit="exit"
             className="w-full"
           >
-            {renderContent()}
+            <div className="rounded-[32px] border border-slate-800/70 bg-slate-950/55 backdrop-blur-md p-5 md:p-8 shadow-[0_18px_80px_rgba(3,14,37,0.55)]">
+              {renderContent()}
+            </div>
           </motion.div>
         </AnimatePresence>
       </main>

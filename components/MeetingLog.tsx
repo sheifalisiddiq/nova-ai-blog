@@ -1,6 +1,7 @@
 import React from 'react';
 import { MeetingLogEntry } from '../types.ts';
 import { motion } from 'framer-motion';
+import GlowCard from './ui/GlowCard.tsx';
 
 const LOGS: MeetingLogEntry[] = [
   {
@@ -56,122 +57,71 @@ const LOGS: MeetingLogEntry[] = [
 const MeetingLog: React.FC = () => {
   return (
     <div className="space-y-8">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center md:text-left"
-      >
-        <h2 className="text-3xl font-bold text-white mb-2">Supervisor Meeting Log</h2>
-        <p className="text-slate-400">
-          Official record of progress reviews and guidance from{' '}
-          <span className="text-cyan-400 font-medium">Mr. Roshan Renji</span>.
-        </p>
+      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+        <GlowCard className="p-6 md:p-8">
+          <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300 font-mono mb-2">Supervisor Sync Archive</p>
+          <h2 className="bento-title font-bold text-white">Meeting Log</h2>
+          <p className="text-slate-400 mt-2 max-w-3xl">
+            Official weekly guidance records with action items reviewed by{' '}
+            <span className="text-cyan-300 font-medium">Mr. Roshan Renji</span>.
+          </p>
+        </GlowCard>
       </motion.div>
 
       {LOGS.length > 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="overflow-x-auto rounded-2xl border border-slate-800 shadow-xl"
-        >
-          <table className="w-full text-left border-collapse bg-slate-900/50">
-            <thead>
-              <tr className="bg-slate-800/50 border-b border-slate-800">
-                <th className="px-6 py-4 text-xs font-mono font-bold text-slate-500 uppercase tracking-widest">
-                  Date
-                </th>
-                <th className="px-6 py-4 text-xs font-mono font-bold text-slate-500 uppercase tracking-widest">
-                  Discussion Points
-                </th>
-                <th className="px-6 py-4 text-xs font-mono font-bold text-slate-500 uppercase tracking-widest">
-                  Action Items
-                </th>
-              </tr>
-            </thead>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {LOGS.map((log, index) => (
+            <motion.div
+              key={log.id}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ delay: index * 0.08, duration: 0.65 }}
+            >
+              <GlowCard className="h-full p-6" spotlight={index % 2 === 0 ? 'cyan' : 'blue'}>
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <span className="px-2.5 py-1 rounded-lg text-[11px] uppercase tracking-wider font-mono border border-cyan-400/30 bg-cyan-500/10 text-cyan-300">
+                    {log.date}
+                  </span>
+                  <span className="text-xs text-slate-400">Supervisor: {log.supervisor}</span>
+                </div>
 
-            <tbody className="divide-y divide-slate-800">
-              {LOGS.map((log) => (
-                <motion.tr
-                  key={log.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="hover:bg-slate-800/30 transition-colors"
-                >
-                  <td className="px-6 py-6 align-top">
-                    <span className="text-slate-200 font-medium whitespace-nowrap">
-                      {log.date}
-                    </span>
-                  </td>
+                <p className="text-slate-300 text-sm leading-relaxed mb-5">{log.discussion}</p>
 
-                  <td className="px-6 py-6 align-top">
-                    <p className="text-slate-400 text-sm leading-relaxed max-w-md">
-                      {log.discussion}
-                    </p>
-                  </td>
-
-                  <td className="px-6 py-6 align-top">
-                    <ul className="space-y-2">
-                      {log.actionItems.map((item, idx) => (
-                        <li key={idx} className="flex items-center gap-2">
-                          <svg
-                            className="w-4 h-4 text-cyan-500 flex-shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={3}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          <span className="text-slate-300 text-sm">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </motion.div>
+                <div className="border-t border-slate-800 pt-4">
+                  <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-400 mb-3">Action Items</p>
+                  <ul className="space-y-2.5">
+                    {log.actionItems.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="mt-[6px] w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
+                        <span className="text-sm text-slate-300">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </GlowCard>
+            </motion.div>
+          ))}
+        </div>
       ) : (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="p-12 border-2 border-dashed border-slate-800 rounded-3xl flex flex-col items-center justify-center text-slate-500 text-center"
-        >
-          <svg className="w-12 h-12 mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-            />
-          </svg>
-          <p className="font-medium text-slate-300">No meeting logs recorded yet</p>
-          <p className="text-sm mt-1 max-w-xs mx-auto">
-            Future meetings will be documented here with detailed discussion points and action items.
+        <GlowCard className="p-12 text-center">
+          <p className="text-slate-300 font-medium">No meeting logs recorded yet</p>
+          <p className="text-sm mt-2 text-slate-500">
+            Future meetings will be documented here with discussion points and action items.
           </p>
-        </motion.div>
+        </GlowCard>
       )}
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="p-6 bg-blue-500/5 border border-blue-500/20 rounded-xl flex gap-4 items-center"
-      >
-        <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-          <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+      <GlowCard className="p-5 md:p-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl border border-blue-400/35 bg-blue-500/10 text-blue-300 flex items-center justify-center flex-shrink-0">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-slate-300 text-sm">Logs are updated after project sync sessions with the supervisor.</p>
         </div>
-        <p className="text-blue-200/80 text-sm">
-          Logs are typically updated following syncs with the project supervisor.
-        </p>
-      </motion.div>
+      </GlowCard>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { GalleryItem } from '../types.ts';
 import { motion } from 'framer-motion';
@@ -6,87 +5,86 @@ import { motion } from 'framer-motion';
 const GALLERY: GalleryItem[] = [
   {
     id: '0',
-    title: 'Research & Lab Analysis',
-    description: 'Active development phase at Middlesex University Dubai, conducting real-time network traffic analysis and model training.',
-    imageUrl: '/fyp-image.jpg',
-    category: 'Environment'
+    title: 'Dashboard Interface',
+    description: 'Central NOVA command view for monitoring telemetry, alerts, and model activity in one panel.',
+    imageUrl: '/images/interface1.png',
+    category: 'Interface'
   },
   {
     id: '1',
-    title: 'System Architecture',
-    description: 'High-level design of the AI-Based Network Monitoring system showing the data flow from packet capture to anomaly detection.',
-    imageUrl: 'https://picsum.photos/seed/arch/800/600',
-    category: 'Design'
+    title: 'Network Diagnostics',
+    description: 'Diagnostics workspace for validating connectivity, service behavior, and anomaly indicators.',
+    imageUrl: '/images/networkdiagnostics1.png',
+    category: 'Diagnostics'
   },
   {
     id: '2',
-    title: 'Data Flow Diagram',
-    description: 'Detailed DFD illustrating how Scapy processes incoming traffic and extracts metadata features.',
-    imageUrl: 'https://picsum.photos/seed/flow/800/600',
-    category: 'Design'
+    title: 'Speed Test Utility',
+    description: 'Integrated speed test utility used to benchmark baseline throughput and latency performance.',
+    imageUrl: '/images/speedtest1.png',
+    category: 'Utility'
   },
   {
     id: '3',
-    title: 'Python Scapy Module',
-    description: 'Code snippet of the initial packet sniffing implementation using Python.',
-    imageUrl: 'https://picsum.photos/seed/code/800/600',
-    category: 'Development'
+    title: 'Incident Report Output',
+    description: 'Generated incident report output with structured findings for response and documentation.',
+    imageUrl: '/images/incidentreport1.png',
+    category: 'Reporting'
   }
 ];
 
 const Gallery: React.FC = () => {
   return (
-    <div className="space-y-12 pb-12">
-      <motion.div 
-        initial={{ opacity: 0, x: -50 }}
+    <div className="space-y-10 pb-8">
+      <motion.div
+        initial={{ opacity: 0, x: -40 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
+        transition={{ duration: 0.95, ease: 'easeOut' }}
         className="text-center md:text-left"
       >
-        <h2 className="text-3xl font-bold text-white mb-2">Project Gallery</h2>
-        <p className="text-slate-400 max-w-2xl">Visual documentation of our technical diagrams, coding environments, and system interfaces.</p>
+        <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300 font-mono mb-2">NOVA Visual Media</p>
+        <h2 className="text-3xl font-bold text-white mb-2">Interface Gallery</h2>
+        <p className="text-slate-400 max-w-2xl">
+          Real screenshots from the NOVA platform documenting operational views across interface, diagnostics, utility,
+          and incident reporting workflows.
+        </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {GALLERY.map((item, index) => (
-          <motion.div 
+          <motion.figure
             key={item.id}
-            initial={{ opacity: 0, y: 80, scale: 0.95 }}
+            initial={{ opacity: 0, y: 42, scale: 0.98 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ delay: index * 0.25, duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -15 }}
-            className="group relative bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-800 transition-all duration-1000 hover:border-cyan-500/30 shadow-2xl"
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -8 }}
+            className="group relative overflow-hidden rounded-3xl border border-slate-800/90 bg-slate-950/75 shadow-[0_20px_70px_rgba(2,8,23,0.65)] transition-all duration-500 hover:border-cyan-500/35"
           >
             <div className="aspect-video overflow-hidden relative">
-              <motion.img 
-                src={item.imageUrl} 
-                alt={item.title} 
-                whileHover={{ scale: 1.08 }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=1000&auto=format&fit=crop";
-                }}
+              <motion.img
+                src={item.imageUrl}
+                alt={item.title}
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-1000"></div>
-              
-              <div className="absolute top-6 right-6">
-                 <span className="px-3 py-1.5 bg-slate-950/80 backdrop-blur-md text-cyan-400 rounded-full text-[10px] font-bold uppercase tracking-widest border border-cyan-500/20">
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/96 via-slate-950/35 to-transparent opacity-90 transition-opacity duration-500 group-hover:opacity-85" />
+
+              <div className="absolute right-4 top-4">
+                <span className="rounded-full border border-cyan-500/25 bg-slate-950/85 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-cyan-300 backdrop-blur-md">
                   {item.category}
                 </span>
               </div>
-              
-              <div className="absolute inset-0 flex items-end p-8">
-                 <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-1000">
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-1000">{item.title}</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-100">
-                      {item.description}
-                    </p>
-                 </div>
+
+              <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
+                <figcaption className="rounded-2xl border border-slate-700/60 bg-slate-950/75 p-4 backdrop-blur-sm">
+                  <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-slate-300">{item.description}</p>
+                </figcaption>
               </div>
             </div>
-          </motion.div>
+          </motion.figure>
         ))}
       </div>
     </div>

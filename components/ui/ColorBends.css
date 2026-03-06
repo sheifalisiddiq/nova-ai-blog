@@ -1,0 +1,13 @@
+.color-bends {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.color-bends canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  filter: saturate(1.04) brightness(0.98);
+}
