@@ -1,5 +1,4 @@
-// App.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavTab } from './types.ts';
 import Navbar from './components/Navbar.tsx';
 import About from './components/About.tsx';
@@ -8,47 +7,43 @@ import MeetingLog from './components/MeetingLog.tsx';
 import Contact from './components/Contact.tsx';
 import Gallery from './components/Gallery.tsx';
 import Footer from './components/Footer.tsx';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavTab>(NavTab.ABOUT);
-  const [prevTab, setPrevTab] = useState<NavTab>(NavTab.ABOUT);
 
-  // Smooth scroll to top on tab change
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [activeTab]);
 
   const handleTabChange = (tab: NavTab) => {
-    setPrevTab(activeTab);
     setActiveTab(tab);
   };
 
-  const getTabIndex = (tab: NavTab) => Object.values(NavTab).indexOf(tab);
-  const direction = getTabIndex(activeTab) > getTabIndex(prevTab) ? 1 : -1;
-
-  // Added explicit Variants type to fix TypeScript error where "spring" was inferred as string instead of AnimationGeneratorType
   const pageVariants: Variants = {
-    initial: (direction: number) => ({
-      x: direction > 0 ? 500 : -500,
+    initial: {
       opacity: 0,
-    }),
+      y: 12,
+      scale: 0.996
+    },
     animate: {
-      x: 0,
       opacity: 1,
+      y: 0,
+      scale: 1,
       transition: {
-        x: { type: "spring", stiffness: 60, damping: 20, mass: 1 },
-        opacity: { duration: 0.8, ease: "easeOut" }
+        duration: 0.22,
+        ease: [0.22, 1, 0.36, 1]
       }
     },
-    exit: (direction: number) => ({
-      x: direction > 0 ? -500 : 500,
+    exit: {
       opacity: 0,
+      y: -8,
+      scale: 0.996,
       transition: {
-        x: { type: "spring", stiffness: 60, damping: 20 },
-        opacity: { duration: 0.6, ease: "easeIn" }
+        duration: 0.16,
+        ease: 'easeOut'
       }
-    })
+    }
   };
 
   const renderContent = () => {
@@ -81,10 +76,9 @@ const App: React.FC = () => {
       <Navbar activeTab={activeTab} onTabChange={handleTabChange} />
       
       <main className="flex-grow pt-28 pb-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full overflow-hidden">
-        <AnimatePresence mode="wait" custom={direction}>
+        <AnimatePresence mode="sync" initial={false}>
           <motion.div
             key={activeTab}
-            custom={direction}
             variants={pageVariants}
             initial="initial"
             animate="animate"

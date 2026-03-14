@@ -1,0 +1,147 @@
+.animated-list {
+  position: relative;
+  border: 1px solid rgba(96, 165, 250, 0.16);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(2, 6, 23, 0.94), rgba(5, 12, 29, 0.82)),
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.08), transparent 48%);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 22px 70px rgba(2, 8, 24, 0.42);
+  overflow: hidden;
+}
+
+.animated-list__header {
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid rgba(30, 41, 59, 0.9);
+  background: linear-gradient(180deg, rgba(8, 18, 38, 0.72), rgba(8, 18, 38, 0.18));
+}
+
+.animated-list__eyebrow {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: rgb(103 232 249 / 0.9);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+}
+
+.animated-list__title {
+  margin: 0.55rem 0 0;
+  color: #f8fbff;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.animated-list__subtitle {
+  margin: 0.45rem 0 0;
+  color: rgba(148, 163, 184, 0.92);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.animated-list__rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.9rem;
+}
+
+.animated-list__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(30, 41, 59, 0.9);
+  border-radius: 18px;
+  background: rgba(7, 14, 30, 0.62);
+  color: #cbd5e1;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.24s ease,
+    border-color 0.24s ease,
+    background-color 0.24s ease,
+    box-shadow 0.24s ease,
+    color 0.24s ease;
+}
+
+.animated-list__item:hover,
+.animated-list__item:focus-visible {
+  outline: none;
+  transform: translateX(4px);
+  border-color: rgba(34, 211, 238, 0.32);
+  background: rgba(10, 19, 40, 0.82);
+  color: #f8fbff;
+  box-shadow: 0 12px 34px rgba(8, 39, 92, 0.22);
+}
+
+.animated-list__item--active {
+  border-color: rgba(34, 211, 238, 0.42);
+  background:
+    linear-gradient(135deg, rgba(10, 22, 44, 0.96), rgba(8, 16, 34, 0.9)),
+    radial-gradient(circle at left, rgba(34, 211, 238, 0.12), transparent 46%);
+  color: #f8fbff;
+  box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.08), 0 16px 42px rgba(6, 34, 86, 0.28);
+}
+
+.animated-list__pulse {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #67e8f9, #3b82f6);
+  box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4);
+  transition: transform 0.24s ease, box-shadow 0.24s ease, opacity 0.24s ease;
+}
+
+.animated-list__item--active .animated-list__pulse {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 8px rgba(34, 211, 238, 0.08), 0 0 18px rgba(34, 211, 238, 0.28);
+}
+
+.animated-list__copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.animated-list__label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.animated-list__meta {
+  margin-top: 0.18rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(103, 232, 249, 0.72);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+}
+
+.animated-list__arrow {
+  color: rgba(125, 211, 252, 0.78);
+  transition: transform 0.24s ease;
+}
+
+.animated-list__item:hover .animated-list__arrow,
+.animated-list__item:focus-visible .animated-list__arrow,
+.animated-list__item--active .animated-list__arrow {
+  transform: translateX(2px);
+}
+
+@media (max-width: 1023px) {
+  .animated-list__header {
+    padding: 1.1rem 1.1rem 0.95rem;
+  }
+
+  .animated-list__rail {
+    padding: 0.8rem;
+  }
+}

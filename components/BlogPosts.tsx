@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BlogPost, Comment } from '../types.ts';
 import CommentSection from './CommentSection.tsx';
 import { motion } from 'framer-motion';
 import GlowCard from './ui/GlowCard.tsx';
+import CardNav from './ui/CardNav.tsx';
 
 const INITIAL_POSTS: BlogPost[] = [
   {
@@ -165,11 +166,77 @@ const INITIAL_POSTS: BlogPost[] = [
       'This week was about trust and control. Detection alone is not enough if response actions are unreliable or unsafe. By stabilizing firewall behavior and making the block target persistent, NOVA became safer to operate and stronger as a practical demonstration of active defense.',
     tags: ['Firewall', 'Active Response', 'Blocking Logic', 'Windows Security', 'Demo Ready', 'Incident Response'],
     comments: []
+  },
+
+  {
+    id: '7',
+    week: 7,
+    date: 'Week 7',
+    title: 'Week 7: Expanding NOVA with Endpoint Review, Device Discovery, Diagnostics, Operations Support, Memory-Backed AI, and Stronger ML Engineering',
+    concept:
+      'Week 7 marked a clear expansion in what NOVA can do. It is no longer just a traffic-focused intrusion detection dashboard; it is now taking shape as a broader AI-assisted cybersecurity and network operations platform with live suspicious traffic detection, endpoint review, local network awareness, diagnostics, operations-oriented support, memory-backed AI assistance, and much stronger machine learning engineering behind the scenes.',
+    rationale:
+      'This stage of the project needed more than additional detection logic. NOVA had to become more useful in realistic review and investigation workflows by helping answer practical questions such as whether suspicious traffic is happening now, what changed on a laptop, what devices exist on the local network, whether a problem is actually security-related or just poor connectivity, and how AI can explain those findings clearly. At the same time, the internal ML and AI layers needed to become more structured and trustworthy.',
+    details: {
+      significance:
+        'Week 7 made NOVA feel substantially more complete as a platform. Key Week 7 Feature Upgrades included stronger live suspicious traffic detection context, a major Endpoint Review capability, improved Device Discovery for local network awareness, diagnostics tooling, the start of operations-oriented support workflows, memory-backed AI assistance, and a more formal ML engineering pipeline. By the end of the week, the corrected model had been retrained, the memory layer was integrated, and the project had moved into a validation and refinement stage rather than open-ended feature expansion.',
+      approach: {
+        capture:
+          'Technical Work: The biggest visible Week 7 progress was feature expansion around investigation and visibility. NOVA continued strengthening live suspicious traffic detection while adding a major Endpoint Review capability for checking recent local system activity when a user wants to understand whether a laptop may have been used, touched, or changed. It now reviews system context, visible user and session information, recent login and session visibility, recent files, profile changes, image and settings-related changes, PowerShell history, and active network connections. Device Discovery was also strengthened so NOVA can scan the local subnet, identify active hosts, inspect focused ports, and cautiously highlight suspicious indicators, giving the project a practical local network-awareness use case. Network Diagnostics added Wi-Fi or link information and speed testing with AI explanation, which helps separate genuine security concerns from ordinary connectivity problems. In parallel, NOVA also began expanding toward operations-oriented support through Router / Switch SSH Review, Config Generation, Change Validation, and Controlled Action Workflows.',
+        ai:
+          'AI and ML Improvements: A second layer of progress this week was intelligence quality. Gemini explanations were refined to be more human-friendly and less cluttered by noisy technical artifacts, with stronger focus on what happened, who seems to have used the laptop, what was touched, what command activity occurred, what network activity existed, what looks normal or unusual, and what the user should check next. The chatbot was also upgraded through nova_memory.py, which added a lightweight memory-backed retrieval layer so the existing assistant can use short past NOVA summaries from incident history, endpoint reviews, device discovery, and operations assistant actions before answering. This remains one chatbot, but it is now more useful because it can respond with project memory. The ML pipeline was also upgraded through nova_ml_utils.py and train_nova_model.py, moving from a basic single-model workflow to a more formal training and evaluation pipeline with cleaning, model comparison, class-balance-aware training, false-positive and false-negative evaluation, and saved artifacts and summaries. Across the compared models, RandomForestBalanced remained the strongest choice, delivering strong precision, very high recall, and low false negatives, which made the ML side of NOVA much more credible and structured.',
+        ui:
+          'Challenges Solved: One of the most important technical issues found this week was a protocol_type mapping mismatch between the training workflow and the live NOVA application. That meant training and live inference were not interpreting protocol values in exactly the same way, which undermined confidence in the model. I fixed the issue by replacing the old encoding with an explicit mapping of tcp -> 0, udp -> 1, and other -> 2, then retrained the model so the live app and trained model are now aligned. In parallel, the project presentation and navigation were also tightened so the platform feels more coherent, easier to navigate, and better aligned with the maturity of the underlying system. Current Direction: Week 7 ended with the corrected model retrained, the memory-backed assistant integrated, premium UI and navigation improvements in place, and the major new features established. The project is now in a validation and refinement stage, with the next step centered on normal traffic testing, iPhone flood testing, port-scan validation, and continued improvement of operations usefulness, explanation quality, and memory retrieval quality.'
+      }
+    },
+    reflections:
+      'Week 7 felt substantial because the progress was not just internal. NOVA became more visibly useful through endpoint review, device discovery, diagnostics, stronger project presentation, improved weekly navigation, and a more polished premium interface, while the AI and ML foundation also became more structured underneath. Fixing the protocol mapping issue and retraining the model closed an important technical gap, and the project now has a clearer direction: validate what has been built, improve reliability, and refine the parts that will matter most in realistic use.',
+    tags: ['Interface Design', 'Endpoint Review', 'Device Discovery', 'Navigation', 'Protocol Mapping', 'RAG Memory'],
+    comments: []
   }
 ];
 
 const BlogPosts: React.FC = () => {
   const [posts, setPosts] = useState<BlogPost[]>(INITIAL_POSTS);
+  const [activeSectionId, setActiveSectionId] = useState(`week-${INITIAL_POSTS[0].week}`);
+
+  const navItems = useMemo(
+    () =>
+      posts.map((post) => ({
+        id: `week-${post.week}`,
+        label: `Week ${post.week}`,
+        title: post.title
+      })),
+    [posts]
+  );
+
+  useEffect(() => {
+    const sections = posts
+      .map((post) => document.getElementById(`week-${post.week}`))
+      .filter((section): section is HTMLElement => Boolean(section));
+
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleEntries.length > 0) {
+          setActiveSectionId(visibleEntries[0].target.id);
+        }
+      },
+      {
+        rootMargin: '-18% 0px -58% 0px',
+        threshold: [0.2, 0.35, 0.55]
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [posts]);
 
   const handleAddComment = (postId: string, newComment: Omit<Comment, 'id' | 'timestamp'>) => {
     const timestamp = new Date()
@@ -217,6 +284,15 @@ const BlogPosts: React.FC = () => {
     );
   };
 
+  const handleNavigateToWeek = (sectionId: string) => {
+    setActiveSectionId(sectionId);
+
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+
+    section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+
   return (
     <div className="space-y-8 md:space-y-10">
       <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
@@ -231,111 +307,123 @@ const BlogPosts: React.FC = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 gap-8">
-        {posts.map((post) => (
-          <motion.article
-            key={post.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-90px' }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="relative"
-          >
-            <GlowCard className="overflow-hidden" spotlight={post.week % 2 === 0 ? 'blue' : 'cyan'}>
-              <div className="p-2 px-5 bg-slate-900/85 flex justify-between items-center text-xs font-mono text-slate-400 border-b border-slate-800">
-                <span className="tracking-[0.18em] uppercase">Week {post.week.toString().padStart(2, '0')}</span>
-                <span>{post.date}</span>
-              </div>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="sticky top-24 z-20"
+        >
+          <CardNav items={navItems} activeId={activeSectionId} onSelect={handleNavigateToWeek} />
+        </motion.div>
 
-              <div className="p-6 md:p-9 lg:p-10">
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg text-[10px] font-bold uppercase tracking-wider"
+        <div className="grid grid-cols-1 gap-8">
+          {posts.map((post) => (
+            <motion.article
+              key={post.id}
+              id={`week-${post.week}`}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-90px' }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="relative scroll-mt-32"
+            >
+              <GlowCard className="overflow-hidden" spotlight={post.week % 2 === 0 ? 'blue' : 'cyan'}>
+                <div className="p-2 px-5 bg-slate-900/85 flex justify-between items-center text-xs font-mono text-slate-400 border-b border-slate-800">
+                  <span className="tracking-[0.18em] uppercase">Week {post.week.toString().padStart(2, '0')}</span>
+                  <span>{post.date}</span>
+                </div>
+
+                <div className="p-6 md:p-9 lg:p-10">
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg text-[10px] font-bold uppercase tracking-wider"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">{post.title}</h3>
+
+                  <div className="space-y-8">
+                    <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
+                      <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Project Idea</h4>
+                      <p className="text-slate-200 leading-relaxed">{post.concept}</p>
+                    </section>
+
+                    <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
+                      <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Rationale</h4>
+                      <p className="text-slate-400 leading-relaxed">{post.rationale}</p>
+                    </section>
+
+                    <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
+                      <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Technical Work</h4>
+
+                      <div className="grid grid-cols-1 gap-4 mt-4">
+                        <motion.div
+                          whileHover={{ x: 8 }}
+                          transition={{ type: 'spring', stiffness: 40, damping: 10 }}
+                          className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-cyan-500 mt-1.5 flex-shrink-0"></div>
+                          <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.capture}</p>
+                        </motion.div>
+
+                        <motion.div
+                          whileHover={{ x: 8 }}
+                          transition={{ type: 'spring', stiffness: 40, damping: 10 }}
+                          className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 flex-shrink-0"></div>
+                          <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.ai}</p>
+                        </motion.div>
+
+                        <motion.div
+                          whileHover={{ x: 8 }}
+                          transition={{ type: 'spring', stiffness: 40, damping: 10 }}
+                          className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
+                        >
+                          <div className="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0"></div>
+                          <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.ui}</p>
+                        </motion.div>
+                      </div>
+
+                      <p className="mt-4 text-slate-400 text-sm italic border-t border-slate-800/80 pt-4">
+                        <span className="text-white font-bold">Significance:</span> {post.details.significance}
+                      </p>
+                    </section>
+
+                    <section className="bg-slate-950/50 p-6 rounded-2xl border border-slate-800/70 border-l-4 border-l-cyan-500">
+                      <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Reflections</h4>
+                      <p className="text-slate-400 text-sm italic leading-relaxed">{post.reflections}</p>
+                    </section>
+                  </div>
+
+                  <CommentSection
+                    comments={post.comments || []}
+                    onAddComment={(comment) => handleAddComment(post.id, comment)}
+                    onDeleteComment={(commentId) => handleDeleteComment(post.id, commentId)}
+                  />
+
+                  <div className="mt-12 flex justify-end">
+                    <motion.div
+                      whileHover={{ x: 8 }}
+                      transition={{ type: 'spring', stiffness: 40, damping: 10 }}
+                      className="flex items-center gap-2 text-cyan-300 font-medium cursor-pointer transition-all duration-700"
                     >
-                      #{tag}
-                    </span>
-                  ))}
+                      <span>Technical docs coming soon</span>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </motion.div>
+                  </div>
                 </div>
-
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">{post.title}</h3>
-
-                <div className="space-y-8">
-                  <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
-                    <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Project Idea</h4>
-                    <p className="text-slate-200 leading-relaxed">{post.concept}</p>
-                  </section>
-
-                  <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
-                    <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Rationale</h4>
-                    <p className="text-slate-400 leading-relaxed">{post.rationale}</p>
-                  </section>
-
-                  <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
-                    <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Technical Work</h4>
-
-                    <div className="grid grid-cols-1 gap-4 mt-4">
-                      <motion.div
-                        whileHover={{ x: 8 }}
-                        transition={{ type: 'spring', stiffness: 40, damping: 10 }}
-                        className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
-                      >
-                        <div className="w-2 h-2 rounded-full bg-cyan-500 mt-1.5 flex-shrink-0"></div>
-                        <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.capture}</p>
-                      </motion.div>
-
-                      <motion.div
-                        whileHover={{ x: 8 }}
-                        transition={{ type: 'spring', stiffness: 40, damping: 10 }}
-                        className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
-                      >
-                        <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 flex-shrink-0"></div>
-                        <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.ai}</p>
-                      </motion.div>
-
-                      <motion.div
-                        whileHover={{ x: 8 }}
-                        transition={{ type: 'spring', stiffness: 40, damping: 10 }}
-                        className="p-4 bg-slate-950/70 rounded-xl border border-slate-800 flex items-start gap-3"
-                      >
-                        <div className="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0"></div>
-                        <p className="text-slate-300 text-sm leading-relaxed">{post.details.approach.ui}</p>
-                      </motion.div>
-                    </div>
-
-                    <p className="mt-4 text-slate-400 text-sm italic border-t border-slate-800/80 pt-4">
-                      <span className="text-white font-bold">Significance:</span> {post.details.significance}
-                    </p>
-                  </section>
-
-                  <section className="bg-slate-950/50 p-6 rounded-2xl border border-slate-800/70 border-l-4 border-l-cyan-500">
-                    <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Reflections</h4>
-                    <p className="text-slate-400 text-sm italic leading-relaxed">{post.reflections}</p>
-                  </section>
-                </div>
-
-                <CommentSection
-                  comments={post.comments || []}
-                  onAddComment={(comment) => handleAddComment(post.id, comment)}
-                  onDeleteComment={(commentId) => handleDeleteComment(post.id, commentId)}
-                />
-
-                <div className="mt-12 flex justify-end">
-                  <motion.div
-                    whileHover={{ x: 8 }}
-                    transition={{ type: 'spring', stiffness: 40, damping: 10 }}
-                    className="flex items-center gap-2 text-cyan-300 font-medium cursor-pointer transition-all duration-700"
-                  >
-                    <span>Technical docs coming soon</span>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </motion.div>
-                </div>
-              </div>
-            </GlowCard>
-          </motion.article>
-        ))}
+              </GlowCard>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </div>
   );

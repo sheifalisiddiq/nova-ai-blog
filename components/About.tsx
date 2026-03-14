@@ -5,6 +5,7 @@ import GlowCard from './ui/GlowCard.tsx';
 import LogoLoop, { LogoLoopItem } from './ui/LogoLoop.tsx';
 import FlowingMenu from './ui/FlowingMenu.tsx';
 import ColorBends from './ui/ColorBends.tsx';
+import MagicRings from './ui/MagicRings.tsx';
 import { SiPython, SiScikitlearn, SiStreamlit, SiGoogle, SiWireshark } from 'react-icons/si';
 import { FaNetworkWired, FaShieldAlt } from 'react-icons/fa';
 import { MdNetworkCheck } from 'react-icons/md';
@@ -82,68 +83,51 @@ const About: React.FC<AboutProps> = ({ onNavigate }) => {
   return (
     <div className="space-y-10 md:space-y-12">
       <motion.section
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: 'easeOut' }}
-        className="grid grid-cols-1 xl:grid-cols-[320px_1fr] gap-6"
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+        className="grid grid-cols-1 gap-6"
       >
-        <GlowCard className="p-6 md:p-7 flex flex-col items-center text-center xl:text-left xl:items-start">
-          <div className="relative group">
-            <div className="absolute -inset-1.5 rounded-full bg-cyan-500/20 blur-lg" />
-            <img
-              src="/images/me.jpg"
-              alt="Sheif Ali Siddiq"
-              className="relative w-52 h-52 rounded-full object-cover border border-cyan-500/40 grayscale group-hover:grayscale-0 transition-all duration-700"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=1000&auto=format&fit=crop';
-              }}
-            />
-          </div>
-
-          <div className="mt-5">
-            <p className="text-[11px] uppercase tracking-[0.22em] text-cyan-300">Middlesex University Dubai</p>
-            <p className="text-sm text-slate-400 mt-1">B.Eng Computer Systems Engineering</p>
-          </div>
-
-          <div className="mt-5 w-full space-y-2 text-left">
-            <div className="glass-chip rounded-xl px-3 py-2 text-[11px] uppercase tracking-wider font-mono">
-              Focus: AI | Networking | Cybersecurity
-            </div>
-            <div className="glass-chip rounded-xl px-3 py-2 text-[11px] uppercase tracking-wider font-mono">
-              System: NOVA IDS
-            </div>
-          </div>
-        </GlowCard>
-
-        <GlowCard className="p-6 md:p-8 lg:p-10">
-          <div className="space-y-6">
+        <GlowCard className="relative overflow-hidden p-6 md:p-8 lg:p-10">
+          <MagicRings className="opacity-75" ringCount={4} speed={0.24} followMouse={false} />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_76%_30%,rgba(34,211,238,0.08),transparent_16%),linear-gradient(135deg,rgba(2,6,23,0.18),rgba(2,6,23,0.06))] pointer-events-none" />
+          <div className="relative z-10 space-y-6">
             <div className="space-y-2">
               <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300 font-mono">
-                AI Security Engineering Blog
+                NOVA Project Website
               </p>
               <h1 className="bento-title font-bold text-white">
-                Sheif Ali <span className="text-cyan-300">Siddiq</span>
+                NOVA <span className="text-cyan-300">AI Cybersecurity and Network Operations Platform</span>
               </h1>
               <p className="bento-subtitle">
-                Final year project blog documenting the architecture, experiments, and engineering decisions behind NOVA,
-                an AI-based host intrusion detection and network monitoring system.
+                Final year project website documenting the architecture, experiments, interface upgrades, and engineering
+                decisions behind NOVA, a platform that combines suspicious traffic detection, endpoint review, device
+                discovery, diagnostics, and AI-assisted operational support.
               </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <div className="glass-chip rounded-xl px-3 py-2 text-[11px] uppercase tracking-wider font-mono">
+                Project: Cybersecurity | AI | Networking
+              </div>
+              <div className="glass-chip rounded-xl px-3 py-2 text-[11px] uppercase tracking-wider font-mono">
+                System: Detection | Review | Operations
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-slate-300 text-[15px] leading-relaxed">
               <p>
-                I am a Computer Systems Engineering student at{' '}
-                <span className="text-cyan-300 font-medium">Middlesex University Dubai</span> with a strong interest in
-                networking, artificial intelligence, and cybersecurity.
+                NOVA began as a host-based intrusion detection idea focused on suspicious traffic monitoring, but it has
+                grown into a broader engineering project for AI-assisted cybersecurity and network operations workflows.
               </p>
               <p>
-                My project focuses on learning normal network behavior from telemetry and detecting suspicious patterns
-                through machine learning and statistical signals.
+                The platform now brings together real-time telemetry, endpoint activity review, local device discovery,
+                network diagnostics, explainable AI summaries, and structured machine learning support in one project.
               </p>
               <p className="md:col-span-2 text-slate-400">
-                I selected this project to build practical depth across packet analysis, data processing, and model-driven
-                detection workflows. This blog records weekly implementation progress, design tradeoffs, and lessons learned.
+                This site is designed to explain the project clearly before anything else: what NOVA is, what it does,
+                how it has evolved week by week, and how the system is moving from a focused IDS build into a more mature
+                cybersecurity and network operations platform.
               </p>
             </div>
 
@@ -174,6 +158,77 @@ const About: React.FC<AboutProps> = ({ onNavigate }) => {
       >
         <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300 font-mono">NOVA Technology Stack</p>
         <LogoLoop items={NOVA_STACK} />
+      </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.7 }}
+      >
+        <GlowCard className="p-6 md:p-8 lg:p-10">
+          <div className="grid grid-cols-1 xl:grid-cols-[360px_minmax(0,1fr)] gap-8 items-center">
+            <div className="relative justify-self-center xl:justify-self-start group">
+              <div className="absolute -inset-3 rounded-[2rem] bg-cyan-500/12 blur-2xl transition-all duration-700 group-hover:bg-cyan-500/20" />
+              <img
+                src="/images/me.jpg"
+                alt="Sheif Ali Siddiq"
+                className="relative w-[280px] h-[280px] md:w-[340px] md:h-[340px] rounded-[2rem] object-cover border border-cyan-400/30 shadow-[0_24px_80px_rgba(8,39,92,0.34)] grayscale group-hover:grayscale-0 transition-all duration-700"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    'https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=1000&auto=format&fit=crop';
+                }}
+              />
+            </div>
+
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300 font-mono">About Me</p>
+                <h2 className="text-2xl md:text-3xl font-semibold text-white">Sheif Ali Siddiq</h2>
+                <p className="text-slate-400 text-sm md:text-base">
+                  Computer Systems Engineering Student, Middlesex University Dubai
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-300 leading-relaxed">
+                <p>
+                  I am building NOVA as my final year project with a focus on cybersecurity, artificial intelligence, and
+                  networking. My main interest is designing systems that are not only technically capable, but also
+                  understandable and useful in realistic investigative workflows.
+                </p>
+                <p>
+                  This project has given me practical depth across packet analysis, feature engineering, ML evaluation,
+                  interface design, and security-focused problem solving. The blog records that process as an engineering
+                  journal rather than just a showcase.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-3 pt-1">
+                <div className="glass-chip rounded-xl px-3 py-2 text-[11px] uppercase tracking-wider font-mono">
+                  Focus: AI Security Engineering
+                </div>
+                <div className="glass-chip rounded-xl px-3 py-2 text-[11px] uppercase tracking-wider font-mono">
+                  Status: Building NOVA
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-3 pt-2">
+                <button
+                  onClick={() => onNavigate(NavTab.CONTACT)}
+                  className="px-6 py-3 rounded-xl border border-cyan-400/40 bg-cyan-500/15 text-cyan-200 font-medium hover:bg-cyan-500/25 hover:shadow-[0_0_28px_rgba(34,211,238,0.32)] transition-all"
+                >
+                  Contact Me
+                </button>
+                <button
+                  onClick={() => onNavigate(NavTab.BLOG)}
+                  className="px-6 py-3 rounded-xl border border-slate-700 bg-slate-900/50 text-slate-200 font-medium hover:border-slate-500 transition-all"
+                >
+                  View Project Timeline
+                </button>
+              </div>
+            </div>
+          </div>
+        </GlowCard>
       </motion.section>
 
       <motion.section
