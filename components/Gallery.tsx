@@ -30,6 +30,27 @@ const GALLERY: GalleryItem[] = [
     description: 'Generated incident report output with structured findings for response and documentation.',
     imageUrl: '/images/incidentreport1.png',
     category: 'Reporting'
+  },
+  {
+    id: '4',
+    title: 'Device Discovery Interface',
+    description: 'Screenshot showing the NOVA device discovery interface for identifying and reviewing devices visible on the local environment.',
+    imageUrl: '/images/device_discovery1.png',
+    category: 'Discovery'
+  },
+  {
+    id: '5',
+    title: 'Device Discovery Results',
+    description: 'Additional screenshot showing the device discovery workflow and how discovered devices are surfaced in the NOVA interface.',
+    imageUrl: '/images/device_discovery2.png',
+    category: 'Discovery'
+  },
+  {
+    id: '6',
+    title: 'SSL Certificate Inspector',
+    description: 'Screenshot of the SSL/TLS Certificate Inspector feature inside the Network Diagnostics module, used to validate certificate health, hostname matching, issuer details, and expiry information.',
+    imageUrl: '/images/certificate_inspector.png',
+    category: 'Security'
   }
 ];
 
