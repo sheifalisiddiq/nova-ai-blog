@@ -5,7 +5,17 @@ import { motion } from 'framer-motion';
 import GlowCard from './ui/GlowCard.tsx';
 import CardNav from './ui/CardNav.tsx';
 
-const INITIAL_POSTS: BlogPost[] = [
+type BlogArtifact = {
+  title: string;
+  image: string;
+  description: string;
+};
+
+type BlogPostWithArtifacts = BlogPost & {
+  artifacts?: BlogArtifact[];
+};
+
+const INITIAL_POSTS: BlogPostWithArtifacts[] = [
   {
     id: '1',
     week: 1,
@@ -91,7 +101,7 @@ const INITIAL_POSTS: BlogPost[] = [
     id: '4',
     week: 4,
     date: 'Week 4',
-    title: 'Week 4: Detection Scaling, Attack Classification, and Roadmap',
+    title: 'Week 4: Detection Scaling, Attack Classification, Roadmap, and System Planning',
     concept:
       'This week focused on scaling the monitor to detect attacks reliably under noisy background traffic and moving toward attack classification (Layer 4 spikes vs Layer 7 floods). The system now supports response actions (block IP), reporting, and explainability.',
     rationale:
@@ -110,6 +120,20 @@ const INITIAL_POSTS: BlogPost[] = [
     },
     reflections:
       'Week 4 made the project feel real: not just detection, but response and reporting. The honest gap is scalability: CSV-based telemetry and single-host monitoring. Phase 3 will target port scan detection + stronger TCP feature signals.',
+    artifacts: [
+      {
+        title: 'Development Timeline (Gantt Chart)',
+        image: '/images/gantt chart.jpeg',
+        description:
+          'This Gantt chart was used to structure the NOVA development timeline, organize the major implementation phases, and track milestones across packet capture, IDS logic, reporting, dashboard refinement, and final testing and stabilization.'
+      },
+      {
+        title: 'System Architecture (UML Diagram)',
+        image: '/images/uml_diagram.jpeg',
+        description:
+          'This UML diagram was used to represent the architecture and interaction of the main NOVA components, including packet capture, feature extraction, hybrid detection logic, dashboard and reporting layers, and response-oriented workflows.'
+      }
+    ],
     tags: ['Scaling', 'Attack-Classification', 'HTTP-Flood', 'UDP-Spike', 'Forensics', 'Incident-Response'],
     comments: []
   },
@@ -224,7 +248,7 @@ const INITIAL_POSTS: BlogPost[] = [
 ];
 
 const BlogPosts: React.FC = () => {
-  const [posts, setPosts] = useState<BlogPost[]>(INITIAL_POSTS);
+  const [posts, setPosts] = useState<BlogPostWithArtifacts[]>(INITIAL_POSTS);
   const [activeSectionId, setActiveSectionId] = useState(`week-${INITIAL_POSTS[0].week}`);
 
   const navItems = useMemo(
@@ -421,6 +445,37 @@ const BlogPosts: React.FC = () => {
                         <span className="text-white font-bold">Significance:</span> {post.details.significance}
                       </p>
                     </section>
+
+                    {post.artifacts?.length ? (
+                      <section className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/35">
+                        <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">
+                          Project Planning & System Design
+                        </h4>
+                        <div className="grid grid-cols-1 gap-5 mt-4">
+                          {post.artifacts.map((artifact) => (
+                            <div
+                              key={artifact.title}
+                              className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/70"
+                            >
+                              <div className="px-4 py-3 border-b border-slate-800 bg-slate-900/80">
+                                <h5 className="text-sm font-semibold text-white">{artifact.title}</h5>
+                              </div>
+                              <div className="p-4 space-y-4">
+                                <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/70">
+                                  <img
+                                    src={artifact.image}
+                                    alt={artifact.title}
+                                    className="w-full h-auto object-cover"
+                                    loading="lazy"
+                                  />
+                                </div>
+                                <p className="text-sm leading-relaxed text-slate-400">{artifact.description}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    ) : null}
 
                     <section className="bg-slate-950/50 p-6 rounded-2xl border border-slate-800/70 border-l-4 border-l-cyan-500">
                       <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-[0.22em] mb-3">Reflections</h4>
