@@ -22,8 +22,8 @@ const STATS = [
     icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
   },
   {
-    title: 'Behavioral AI',
-    text: 'Implementing Random Forest and anomaly detection logic to distinguish baseline behavior from suspicious traffic.',
+    title: 'RAG-Powered AI Assistance',
+    text: 'Combining machine learning with retrieval-augmented AI support so NOVA can provide grounded, context-aware explanations and incident guidance.',
     icon: 'M13 10V3L4 14h7v7l9-11h-7z'
   },
   {
@@ -38,6 +38,7 @@ const SKILLS = [
   'Scapy',
   'Networking',
   'ML',
+  'RAG',
   'Cybersecurity',
   'System Design',
   'Data Processing',
@@ -50,6 +51,7 @@ const NOVA_STACK: LogoLoopItem[] = [
   { label: 'Streamlit', icon: SiStreamlit },
   { label: 'Machine Learning', icon: SiScikitlearn },
   { label: 'Gemini AI', icon: SiGoogle },
+  { label: 'RAG Retrieval', icon: TbFileSearch },
   { label: 'PCAP Analysis', icon: SiWireshark },
   { label: 'Windows Firewall', icon: FaShieldAlt },
   { label: 'Network Diagnostics', icon: MdNetworkCheck },
@@ -122,12 +124,14 @@ const About: React.FC<AboutProps> = ({ onNavigate }) => {
               </p>
               <p>
                 The platform now brings together real-time telemetry, endpoint activity review, local device discovery,
-                network diagnostics, explainable AI summaries, and structured machine learning support in one project.
+                network diagnostics, retrieval-augmented AI support, explainable summaries, and structured machine
+                learning support in one project.
               </p>
               <p className="md:col-span-2 text-slate-400">
                 This site is designed to explain the project clearly before anything else: what NOVA is, what it does,
                 how it has evolved week by week, and how the system is moving from a focused IDS build into a more mature
-                cybersecurity and network operations platform.
+                cybersecurity and network operations platform with retrieval-backed, memory-aware AI explanations for
+                diagnostics, incidents, and reporting.
               </p>
             </div>
 
