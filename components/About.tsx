@@ -236,6 +236,42 @@ const About: React.FC<AboutProps> = ({ onNavigate }) => {
       </motion.section>
 
       <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.75, ease: 'easeOut' }}
+      >
+        <GlowCard className="relative overflow-hidden p-6 md:p-8 lg:p-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_28%),linear-gradient(180deg,rgba(2,6,23,0.12),rgba(2,6,23,0))] pointer-events-none" />
+          <div className="relative z-10 space-y-5">
+            <div className="space-y-2">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-cyan-300 font-mono">Project Demo</p>
+              <h2 className="text-2xl md:text-3xl font-semibold text-white">NOVA in Action</h2>
+              <p className="max-w-3xl text-sm md:text-base leading-relaxed text-slate-300">
+                This demo showcases NOVA&apos;s dashboard, IDS monitoring, network diagnostics, and AI-assisted features in action.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-[1.75rem] border border-slate-800/80 bg-slate-950/80 shadow-[0_20px_70px_rgba(2,8,23,0.55)]">
+              <video
+                controls
+                preload="metadata"
+                className="w-full rounded-[1.75rem] bg-slate-950"
+              >
+                <source src="/images/video1.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+
+            <p className="text-sm leading-relaxed text-slate-400">
+              The walkthrough highlights NOVA&apos;s live dashboard views, alert monitoring, device and network diagnostics,
+              and the AI-assisted workflow used to explain suspicious activity and support investigation.
+            </p>
+          </div>
+        </GlowCard>
+      </motion.section>
+
+      <motion.section
         initial={{ opacity: 0, y: 26 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
